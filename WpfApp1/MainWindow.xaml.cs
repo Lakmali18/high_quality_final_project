@@ -24,5 +24,27 @@ namespace WpfApp1
         {
             InitializeComponent();
         }
+
+
+        private void txtCreditCard_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //  txtCreditCard.Foreground = Brushes.Black;
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void btnDisplay_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }

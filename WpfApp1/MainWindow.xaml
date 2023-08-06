@@ -6,7 +6,100 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
+    <Grid Background="#FF00B3FF">
+        <Grid.Resources>
+            <local:RowValueConverter x:Key="MyConverter"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="255"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Customer Type" Grid.Row="0" Grid.Column="0" FontWeight="Bold"/>
+        <Label Content="Age of the House (1:100)" Grid.Row="1" Grid.Column="0" FontWeight="Bold"/>
+        <Label Content="Size of the House (50:5000 sq.ft.)" Grid.Row="2" Grid.Column="0" FontWeight="Bold"/>
+        <Label Content="Size of the Paddock (50:1000 sq.ft.)" Grid.Row="3" Grid.Column="0" FontWeight="Bold"/>
+        <Label Content="Credit Card Number" Grid.Row="4" Grid.Column="0" FontWeight="Bold"/>
+        <ComboBox Name="cmbType" Grid.Row="0" Grid.Column="1" Margin="5" ItemsSource="{Binding Path=CustomerType}" Width="115"
+                  ToolTip="{Binding ElementName=cmbType, Path=(Validation.Errors)[0].ErrorContent}">
+            <ComboBox.SelectedIndex>
+                <Binding Path="MyProperty.IntType" NotifyOnValidationError="true" ValidatesOnExceptions="True">
+                    <Binding.ValidationRules>
+                        <local:TypeRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedIndex>
+        </ComboBox>
+        <TextBox Name="txtAge" Grid.Row="1" Grid.Column="1" Width="115" Margin="5"
+                 ToolTip="{Binding ElementName=txtAge, Path=(Validation.Errors)[0].ErrorContent}">
+            <TextBox.Text>
+                <Binding Path="MyProperty.HouseAge" NotifyOnValidationError="true" ValidatesOnExceptions="true">
+                    <Binding.ValidationRules>
+                        <local:IntRule Min="1" Max="100" ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="txtHouseSize" Grid.Row="2" Grid.Column="1" Width="115" Margin="5" 
+                 ToolTip="{Binding ElementName=txtHouseSize, Path=(Validation.Errors)[0].ErrorContent}">
+            <TextBox.Text>
+                <Binding Path="MyProperty.HouseSize" NotifyOnValidationError="true" ValidatesOnExceptions="true">
+                    <Binding.ValidationRules>
+                        <local:IntRule Min="50" Max="5000" ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="txtPadockSize" Grid.Row="3" Grid.Column="1" Width="115" Margin="5" 
+                 ToolTip="{Binding ElementName=txtPadockSize, Path=(Validation.Errors)[0].ErrorContent}">
+            <TextBox.Text>
+                <Binding Path="MyProperty.PaddockSize" NotifyOnValidationError="true" ValidatesOnExceptions="true">
+                    <Binding.ValidationRules>
+                        <local:IntRule Min="50" Max="1000" ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="txtCreditCard" Grid.Row="4" Grid.Column="1" Width="115" Margin="5" TextChanged="txtCreditCard_TextChanged"
+                 ToolTip="{Binding ElementName=txtCreditCard, Path=(Validation.Errors)[0].ErrorContent}">
+            <TextBox.Text>
+                <Binding Path="MyProperty.CreditCardNumber" NotifyOnValidationError="true" ValidatesOnExceptions="True">
+                    <Binding.ValidationRules>
+                        <local:StringRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Button Name="btnAdd" Content="Add" Grid.Row="5" Grid.Column="0" Margin="5" Click="btnAdd_Click" Background="#FF000286" Foreground="White" BorderBrush="#FF00FFD6" Width="100"/>
+        <Button Name="btnSave" Content="Save" Grid.Row="5" Grid.Column="1" Margin="5" Click="btnSave_Click" Background="#FF000286" Foreground="White" BorderBrush="#FF00FFD6" Width="100"/>
+        <Button Name="btnDisplay" Content="Display"  Grid.Row="5" Grid.Column="3"  Margin="5" Click="btnDisplay_Click" Background="#FF000286" Foreground="White" BorderBrush="#FF00FFD6" Width="100"/>
+        <Button Name="btnSearch" Content="Search by Age"  Grid.Row="6" Grid.Column="0" Margin="5" Click="BtnSearch_Click" Background="#FF000286" Foreground="White" Width="100" BorderBrush="#FF00FFD6"/>
+        <TextBox Name="txtSearch" Text="" Grid.Row="6" Grid.Column="1"  Width="250" HorizontalAlignment="Left" Margin="5" BorderBrush="#FF00FFD6"/>
+        <DataGrid x:Name="MyGrid" AutoGenerateColumns="false" ItemsSource="{Binding Path=DisplayProps}" Grid.Row="7" Grid.Column="0" Grid.RowSpan="5"  Grid.ColumnSpan="2"  Background="#FF4976CE" Margin="5">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{Binding Path=., Converter={StaticResource MyConverter}}" />
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}"  Width="90" />
+                <DataGridTextColumn Header="House Age" Binding="{Binding HouseAge}"  Width="90"/>
+                <DataGridTextColumn Header="House Size" Binding="{Binding HouseSize}"  Width="90"/>
+                <DataGridTextColumn Header="Paddock Size" Binding="{Binding PaddockSize}"  Width="90"/>
+                <DataGridTextColumn Header="Credit Card No" Binding="{Binding CreditCardNumber}"  Width="130"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
+
 </Window>
