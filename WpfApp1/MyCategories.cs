@@ -9,12 +9,15 @@ namespace WpfApp1
 {
     public class MyCategories : Categories
     {
-        string type;
+        string categoryType;
+        string profType;
         int intType;
         int intProfType;
         Categories innerCategories;
 
-        public string Type { get => type; set => type = value; }
+        public string CategoryType { get => categoryType; set => categoryType = value; }
+
+        public string ProfType { get => profType; set => profType = value; }
         public Categories InnerCategories { get => innerCategories; set => innerCategories = value; }
         public int IntType { get => intType; set => intType = value; }
 

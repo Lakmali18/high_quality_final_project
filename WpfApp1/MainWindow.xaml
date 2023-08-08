@@ -33,17 +33,17 @@
         <Label Content="Course Name" Grid.Row="0" Grid.Column="2" FontWeight="Bold"/>
         <Label Content="Duration (15-60 mins)" Grid.Row="1" Grid.Column="2" FontWeight="Bold"/>
         <Label Content="SIN Number" Grid.Row="2" Grid.Column="2" FontWeight="Bold"/>
-        <TextBox Name="txtStudentId" Grid.Row="0" Grid.Column="1" Width="115" Margin="5"
+        <TextBox Name="txtStudentId" Grid.Row="0" Grid.Column="1" Width="115" Margin="5" TextChanged="txtStudentId_TextChanged"
                  ToolTip="{Binding ElementName=txtStudentId, Path=(Validation.Errors)[0].ErrorContent}">
             <TextBox.Text>
-                <Binding Path="MyCategory.StudentId" NotifyOnValidationError="true" ValidatesOnExceptions="true">
+                <Binding Path="MyCategory.StudentId" NotifyOnValidationError="true" ValidatesOnExceptions="True">
                     <Binding.ValidationRules>
-                        <local:IntRule Min="1" Max="7" ValidatesOnTargetUpdated="True"/>
+                        <local:StringRule Id="StudentId" Max="7" ValidatesOnTargetUpdated="True"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <ComboBox Name="cmbCategoryType" Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding Path=CategoryTypes}" Width="115"
+        <ComboBox Name="cmbCategoryType" Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding Path=CategoryType}" Width="115"
                   ToolTip="{Binding ElementName=cmbCategoryType, Path=(Validation.Errors)[0].ErrorContent}">
             <ComboBox.SelectedIndex>
                 <Binding Path="MyCategory.IntType" NotifyOnValidationError="true" ValidatesOnExceptions="True">
@@ -53,8 +53,8 @@
                 </Binding>
             </ComboBox.SelectedIndex>
         </ComboBox>
-        <ComboBox Name="cmbProfessorName" Grid.Row="2" Grid.Column="1" Margin="5" ItemsSource="{Binding Path=ProfessorTypes}" Width="115"
-                  ToolTip="{Binding ElementName=cmbProfessorName, Path=(Validation.Errors)[0].ErrorContent}">
+        <ComboBox Name="cmbProfessorName" Grid.Row="2" Grid.Column="1" Margin="5" ItemsSource="{Binding Path=ProfessorType}" Width="115"
+                  ToolTip="{Binding ElementName=cmbProfessorName, Path=(Validation.Errors)[0].ErrorContent}" SelectionChanged="ProfName_SelectionChanged">
             <ComboBox.SelectedIndex>
                 <Binding Path="MyCategory.IntProfType" NotifyOnValidationError="true" ValidatesOnExceptions="True">
                     <Binding.ValidationRules>
@@ -68,7 +68,7 @@
             <TextBox.Text>
                 <Binding Path="MyCategory.CourseName" NotifyOnValidationError="true" ValidatesOnExceptions="True">
                     <Binding.ValidationRules>
-                        <local:StringRule ValidatesOnTargetUpdated="True"/>
+                        <local:StringRule Id="CourseName" ValidatesOnTargetUpdated="True"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -88,7 +88,7 @@
             <TextBox.Text>
                 <Binding Path="MyCategory.SinNo" NotifyOnValidationError="true" ValidatesOnExceptions="True">
                     <Binding.ValidationRules>
-                        <local:StringRule ValidatesOnTargetUpdated="True"/>
+                        <local:StringRule Id="SinNo" Max="9" ValidatesOnTargetUpdated="True"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>

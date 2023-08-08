@@ -29,27 +29,33 @@ namespace WpfApp1
         ObservableCollection<MyCategories> displayCategories = null;
         CategoryList propertyList = new CategoryList();
         MyCategories myCategory = new MyCategories();
-        string[] customerType = null;
+        string[] categoryType = null;
+        string[] professorType = null;
+        string selectedProf = string.Empty;
 
         public ObservableCollection<MyCategories> DisplayCategories { get => displayCategories; set => displayCategories = value; }
         public MyCategories MyCategory { get => myCategory; set => myCategory = value; }
-        public string[] CustomerType { get => customerType; set => customerType = value; }
+        public string[] CategoryType { get => categoryType; set => categoryType = value; }
+        public string[] ProfessorType { get => professorType; set => professorType = value; }
+
         public MainWindow()
         {
             InitializeComponent();
-            customerType = Enum.GetNames(typeof(CategoryTypes));
+            CategoryType = Enum.GetNames(typeof(CategoryTypes));
+            ProfessorType = Enum.GetNames(typeof(ProfessorTypes));
             DisplayCategories = new ObservableCollection<MyCategories>();
             DataContext = this;
         }
 
+
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            BindingExpression beAge = BindingOperations.GetBindingExpression(txtStudentId, TextBox.TextProperty);
-            BindingExpression beHouseSize = BindingOperations.GetBindingExpression(txtCourseName, TextBox.TextProperty);
-            BindingExpression bePaddockSize = BindingOperations.GetBindingExpression(txtDuration, TextBox.TextProperty);
-            BindingExpression beCreditCardNo = BindingOperations.GetBindingExpression(txtSinNo, TextBox.TextProperty);
+            BindingExpression beStudentId = BindingOperations.GetBindingExpression(txtStudentId, TextBox.TextProperty);
+            BindingExpression beCourseName = BindingOperations.GetBindingExpression(txtCourseName, TextBox.TextProperty);
+            BindingExpression beDuration = BindingOperations.GetBindingExpression(txtDuration, TextBox.TextProperty);
+            BindingExpression beSinNo = BindingOperations.GetBindingExpression(txtSinNo, TextBox.TextProperty);
 
-            if (beAge.HasError || beHouseSize.HasError || bePaddockSize.HasError || beCreditCardNo.HasError)
+            if (beStudentId.HasError || beCourseName.HasError || beDuration.HasError || beSinNo.HasError)
             {
                 return;
             }
@@ -60,33 +66,35 @@ namespace WpfApp1
             bool isValidDuration = int.TryParse(txtDuration.Text, out int duration);
             string obscuredSinNo = SinNumberHelper.ObscureCreditCardNumber(txtSinNo.Text);
 
-            MyCategories myProperties = new MyCategories();
-            myProperties.StudentId = studentId;
-            myProperties.CourseName = isValideCourseName;
-            myProperties.Duration = duration;
-            myProperties.SinNo = obscuredSinNo;
-            myProperties.Type = (string)cmbCategoryType.SelectedValue;
+
+            MyCategories myCategories = new MyCategories();
+            myCategories.StudentId = studentId;
+            myCategories.CourseName = isValideCourseName;
+            myCategories.Duration = duration;
+            myCategories.SinNo = obscuredSinNo;
+            myCategories.CategoryType = (string)cmbCategoryType.SelectedValue;
+            myCategories.ProfType = (string)cmbProfessorName.SelectedValue;
 
             if (result && isValidStudentId && isValidDuration)
             {
-                Categories properties = null;
+                Categories categories = null;
                 switch (cmbCategoryType.SelectedIndex)
                 {
                     case 0:
-                        properties = new AcademicSupport(studentId, isValideCourseName, duration, obscuredSinNo);
+                        categories = new AcademicSupport(studentId, isValideCourseName, duration, obscuredSinNo);
                         break;
                     case 1:
-                        properties = new CareerAdvices(studentId, isValideCourseName, duration, obscuredSinNo);
+                        categories = new CareerAdvices(studentId, isValideCourseName, duration, obscuredSinNo);
                         break;
                     case 2:
-                        properties = new GetFeedback(studentId, isValideCourseName, duration, obscuredSinNo);
+                        categories = new GetFeedback(studentId, isValideCourseName, duration, obscuredSinNo);
                         break;
                     default:
                         MessageBox.Show("Program Error");
                         return;
                 }
-                myProperties.InnerCategories = properties;
-                DisplayCategories.Add(myProperties);
+                myCategories.InnerCategories = categories;
+                DisplayCategories.Add(myCategories);
                 cmbCategoryType.SelectedIndex = -1;
                 txtStudentId.Text = string.Empty;
                 txtCourseName.Text = string.Empty;
@@ -95,9 +103,13 @@ namespace WpfApp1
             }
         }
 
+        private void txtStudentId_TextChanged(object sender, TextChangedEventArgs e)
+        {
+             txtStudentId.Foreground = Brushes.Black;
+        }
         private void txtCourseName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //  txtCreditCard.Foreground = Brushes.Black;
+              txtCourseName.Foreground = Brushes.Black;
         }
 
         private void txtSinNumber_TextChanged(object sender, TextChangedEventArgs e)
@@ -122,17 +134,21 @@ namespace WpfApp1
             DisplayCategories.Clear();
             for (int i = 0; i < propertyList.Count(); i++)
             {
-                Categories properties = propertyList[i];
-                MyCategories newProperties = new MyCategories();
-                newProperties.StudentId = properties.StudentId;
-                newProperties.CourseName = properties.CourseName;
-                newProperties.Duration = properties.Duration;
-                newProperties.SinNo = properties.SinNo;
+                Categories categories = propertyList[i];
+                MyCategories newCategories = new MyCategories();
+                newCategories.StudentId = categories.StudentId;
+                newCategories.CourseName = categories.CourseName;
+                newCategories.Duration = categories.Duration;
+                newCategories.SinNo = categories.SinNo;
 
-                string[] arrStr = properties.GetType().ToString().Split('.');
+                string[] arrStr = categories.GetType().ToString().Split('.');
                 string fullType = arrStr[arrStr.Length - 1];
-                newProperties.Type = fullType.Substring(0, fullType.Length);
-                DisplayCategories.Add(newProperties);
+                newCategories.CategoryType = fullType.Substring(0, fullType.Length);
+                DisplayCategories.Add(newCategories);
+
+              
+                newCategories.ProfType = fullType.Substring(0, fullType.Length);
+                DisplayCategories.Add(newCategories);
             }
         }
 
@@ -150,14 +166,14 @@ namespace WpfApp1
         private void WriteToFile()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(CategoryList));
-            TextWriter tw = new StreamWriter("customer_info.xml");
+            TextWriter tw = new StreamWriter("profconect_info.xml");
             serializer.Serialize(tw, propertyList);
             tw.Close();
         }
         private void ReadFromFile()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(CategoryList));
-            TextReader tr = new StreamReader("customer_info.xml");
+            TextReader tr = new StreamReader("profconect_info.xml");
             propertyList = (CategoryList)serializer.Deserialize(tr);
             tr.Close();
         }
@@ -170,5 +186,15 @@ namespace WpfApp1
             MyGrid.ItemsSource = query;
         }
 
+        private void ProfName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbProfessorName.SelectedItem != null)
+            {
+                //var profTypes = (ProfessorTypes)cmbProfessorName.SelectedItem;
+                //selectedProf = Enum.GetName(typeof(ProfessorTypes), profTypes);
+
+              
+            }
+        }
     }
 }

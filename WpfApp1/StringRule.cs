@@ -10,11 +10,24 @@ namespace WpfApp1
 {
     class StringRule : ValidationRule
     {
+       // int min;
+        int max;
+        string id;
+
+       // public int Min { get => min; set => min = value; }
+        public int Max { get => max; set => max = value; }
+        public string Id { get => id; set => id = value; }
+
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            string sinNumber = (string)value;
+            string input = (string)value;
 
-            if ((value == null) || !SinNumberHelper.IsSinNumberValid(sinNumber))
+            if ((value == null))
+            {
+                return new ValidationResult(false, "Invalid");
+            }
+
+            if (Id != "CourseName" && input.Trim().Length != Max)
             {
                 return new ValidationResult(false, "Invalid");
             }
