@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    internal class CareerAdvices : Categories
+    public class CareerAdvices : Categories
     {
         public CareerAdvices() { }
 

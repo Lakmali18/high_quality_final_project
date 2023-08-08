@@ -90,9 +90,13 @@ namespace ConsoleApp1
         {
 
             char[] passArray = SinNo.ToCharArray();
-            for (int i = 4; i < 12; i++)
             {
-                passArray[i] = 'X';
+
+                    for (int i = 1; i < 6; i++)
+                    {
+                        passArray[i] = 'X';
+                    }
+                
             }
             return new string(passArray);
         }

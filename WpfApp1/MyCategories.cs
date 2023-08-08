@@ -7,15 +7,18 @@ using ConsoleApp1;
 
 namespace WpfApp1
 {
-    class MyCategories : Categories
+    public class MyCategories : Categories
     {
         string type;
         int intType;
+        int intProfType;
         Categories innerCategories;
 
         public string Type { get => type; set => type = value; }
-        public Categories InnerProps { get => innerCategories; set => innerCategories = value; }
+        public Categories InnerCategories { get => innerCategories; set => innerCategories = value; }
         public int IntType { get => intType; set => intType = value; }
+
+        public int IntProfType { get => intProfType; set => intProfType = value; }
 
         public override void Connect()
         {

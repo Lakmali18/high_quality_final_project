@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    class AcademicSupport : Categories
+    public class AcademicSupport : Categories
     {
         public AcademicSupport() { }
 
