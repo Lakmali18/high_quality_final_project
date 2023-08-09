@@ -10,6 +10,7 @@ namespace ConsoleApp1
     public abstract class Categories : ICategories
     {
         private int studentId;
+        private string profName;
         private string courseName;
         private int duration;
         private string sinNo;
@@ -24,9 +25,10 @@ namespace ConsoleApp1
 
         }
 
-        public Categories(int studentId, string courseName, int duration, string sinNo)
+        public Categories(int studentId, string profName, string courseName, int duration, string sinNo)
         {
             this.studentId = studentId;
+            this.profName = profName;
             this.courseName = courseName;
             this. duration = duration;
             this.sinNo = sinNo;
@@ -35,6 +37,7 @@ namespace ConsoleApp1
         }
 
         public int StudentId { get => studentId; set => studentId = value; }
+        public string ProfName { get => profName; set => profName = value; }
         public string CourseName { get => courseName; set => courseName = value; }
         public int Duration { get => duration; set => duration = value; }
         public string SinNo { get => sinNo; set => sinNo = value; }

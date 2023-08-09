@@ -53,10 +53,10 @@
                 </Binding>
             </ComboBox.SelectedIndex>
         </ComboBox>
-        <ComboBox Name="cmbProfessorName" Grid.Row="2" Grid.Column="1" Margin="5" ItemsSource="{Binding Path=ProfessorType}" Width="115"
-                  ToolTip="{Binding ElementName=cmbProfessorName, Path=(Validation.Errors)[0].ErrorContent}" SelectionChanged="ProfName_SelectionChanged">
+        <ComboBox Name="cmbProfessorName" Grid.Row="2" Grid.Column="1" Margin="5" Width="115"
+                  ToolTip="{Binding ElementName=cmbProfessorName, Path=(Validation.Errors)[0].ErrorContent}" Loaded="comboBox_Loaded">
             <ComboBox.SelectedIndex>
-                <Binding Path="MyCategory.IntProfType" NotifyOnValidationError="true" ValidatesOnExceptions="True">
+                <Binding Path="MyCategory.ProfName" NotifyOnValidationError="true" ValidatesOnExceptions="True">
                     <Binding.ValidationRules>
                         <local:TypeRule ValidatesOnTargetUpdated="True"/>
                     </Binding.ValidationRules>
@@ -105,9 +105,9 @@
                 </Style>
             </DataGrid.RowStyle>
            <DataGrid.Columns>
-                <DataGridTextColumn Header="Student ID" Binding="{Binding StudentID}"  Width="100" />
+                <DataGridTextColumn Header="Student ID" Binding="{Binding StudentId}"  Width="100" />
                 <DataGridTextColumn Header="Category Type" Binding="{Binding CategoryType}"  Width="100"/>
-                <DataGridTextColumn Header="Professor Name" Binding="{Binding ProfessorName}"  Width="100"/>
+                <DataGridTextColumn Header="Professor Name" Binding="{Binding ProfName}"  Width="100"/>
                 <DataGridTextColumn Header="Course Name" Binding="{Binding CourseName}"  Width="100"/>
                 <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"  Width="100"/>
                 <DataGridTextColumn Header="SIN Number" Binding="{Binding SinNo}"  Width="100"/>

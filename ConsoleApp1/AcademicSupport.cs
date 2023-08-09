@@ -10,7 +10,7 @@ namespace ConsoleApp1
     {
         public AcademicSupport() { }
 
-        public AcademicSupport(int studentId, string courseName, int duration, string sinNo) : base(studentId, courseName, duration, sinNo)
+        public AcademicSupport(int studentId, string profName, string courseName, int duration, string sinNo) : base(studentId, profName, courseName, duration, sinNo)
         {
 
         }

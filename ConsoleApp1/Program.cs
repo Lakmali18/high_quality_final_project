@@ -10,9 +10,9 @@ namespace ConsoleApp1
     {
         public enum CategoryTypes
         {
-            AcademicSupport = 1,
-            CareerAdvices = 2,
-            GetFeedback = 3
+            Academic_Support = 1,
+            Career_Advices = 2,
+            Get_Feedback = 3
         }
 
         static void Main(string[] args)
@@ -27,11 +27,11 @@ namespace ConsoleApp1
 
             using (CategoryList nl = new CategoryList())
             {
-                AcademicSupport blt = new AcademicSupport(8906745, "High Quality Software Programming",15, "954879067");
+                AcademicSupport blt = new AcademicSupport(8906745, "Igor_Pustylnick", "High Quality Software Programming",15, "954879067");
                 nl.Add(blt);
-                CareerAdvices et = new CareerAdvices(8909845, "System Analysis and Design", 30, "959674589");
+                CareerAdvices et = new CareerAdvices(8909845, "Sachin_Parikh", "System Analysis and Design", 30, "959674589");
                 nl.Add(et);
-                GetFeedback ft = new GetFeedback(8900375, "Software Testing Tools", 20, "980896578");
+                GetFeedback ft = new GetFeedback(8900375, "Daljit_Kaur", "Software Testing Tools", 20, "980896578");
                 nl.Add(ft);
                 nl.Sort();
                 for (int i = 0; i < nl.Count(); i++)
