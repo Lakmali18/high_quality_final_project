@@ -46,7 +46,7 @@
             <TextBox.Text>
                 <Binding Path="MyCategory.StudentId" NotifyOnValidationError="true" ValidatesOnExceptions="True">
                     <Binding.ValidationRules>
-                        <local:StringRule Id="StudentId" Max="7" ValidatesOnTargetUpdated="True"/>
+                        <local:StringRule IntOnly="True" Id="StudentId" Max="7" ValidatesOnTargetUpdated="True"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -96,7 +96,7 @@
             <TextBox.Text>
                 <Binding Path="MyCategory.SinNo" NotifyOnValidationError="true" ValidatesOnExceptions="True">
                     <Binding.ValidationRules>
-                        <local:StringRule Id="SinNo" Max="9" ValidatesOnTargetUpdated="True"/>
+                        <local:StringRule IntOnly="True" Id="SinNo" Max="9" ValidatesOnTargetUpdated="True"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>

@@ -73,7 +73,7 @@ namespace WpfApp1
             string isValidProfName = cmbProfessorName.Text;
             string isValideCourseName = txtCourseName.Text;
             bool isValidDuration = int.TryParse(txtDuration.Text, out int duration);
-            string obscuredSinNo = SinNumberHelper.ObscureCreditCardNumber(txtSinNo.Text);
+            string obscuredSinNo = SinNumberHelper.ObscureSINNumber(txtSinNo.Text);
 
 
             MyCategories myCategories = new MyCategories();

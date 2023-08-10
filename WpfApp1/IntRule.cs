@@ -18,16 +18,24 @@ namespace WpfApp1
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            int numVal = 0;
-            if (!int.TryParse(value.ToString(), out numVal))
+            int numVal;
+
+            if (value != null)
             {
-                return new ValidationResult(false, "Wrong data");
+                if (!int.TryParse(value.ToString(), out numVal))
+                {
+                    return new ValidationResult(false, "Wrong data");
+                }
+
+                if (numVal < min || numVal > max)
+                {
+                    return new ValidationResult(false, "Out of Range");
+                }
+            } else
+            {
+                return new ValidationResult(false, "No value provided");
             }
 
-            if (numVal < min || numVal > max)
-            {
-                return new ValidationResult(false, "Out of Range");
-            }
 
             return ValidationResult.ValidResult;
         }
