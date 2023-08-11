@@ -45,6 +45,7 @@ namespace WpfApp1
         {
             InitializeComponent();
             Go();
+            Console.WriteLine("GUI running");
            
         }
 
@@ -53,6 +54,7 @@ namespace WpfApp1
             CategoryType = Enum.GetNames(typeof(CategoryTypes));
             DisplayCategories = new ObservableCollection<MyCategories>();
             cmbProfessorName.ItemsSource = ProfessorTypes;
+            //object ActionButtons = 'e';
             DataContext = this;
         }
 
@@ -162,13 +164,28 @@ namespace WpfApp1
 
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            if (sender is Button button && button.Tag is int studentId)
+            {
+                
+                // Handle button click using the itemId
+                Console.WriteLine($"Editing student with ID: {studentId}");
+            }
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
 
+            if (sender is Button button && button.Tag is MyCategories item)
+            {
+                //YourDataSource.Remove(item);
+                Console.WriteLine($"Deleting student with ID: {item}");
+                DisplayCategories.Remove(item);
+                BtnSave_Click(sender, e);
+                BtnDisplay_Click(sender, e);
+            }
         }
+
+ 
 
 
         private void txtStudentId_TextChanged(object sender, TextChangedEventArgs e)

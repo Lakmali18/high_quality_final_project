@@ -19,7 +19,7 @@ namespace ConsoleApp1
         {
             Program p = new Program();
             p.Go();
-
+            Console.ReadKey();
         }
 
         public void Go()

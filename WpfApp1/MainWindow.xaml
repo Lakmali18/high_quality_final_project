@@ -108,7 +108,7 @@
         <Button Name="btnSearch" Content="Search by Student ID"  Grid.Row="8" Grid.Column="2" Margin="5" Click="BtnSearch_Click" Background="#FF000286" Foreground="White" Width="130" BorderBrush="#FF00FFD6"/>
         <TextBox Name="txtSearch" Text="" Grid.Row="8" Grid.Column="1"  Width="240" HorizontalAlignment="Left" Margin="5" BorderBrush="#FF00FFD6" Background="Transparent" Foreground="White"/>
         <Label Content="View Details" Grid.Row="9" Grid.Column="0" Margin="10,0,0,0" FontWeight="Bold" FontSize="14" Foreground="White"/>
-        <DataGrid x:Name="MyGrid" AutoGenerateColumns="false" ItemsSource="{Binding Path=DisplayCategories}" Grid.Row="10" Grid.Column="0" Grid.RowSpan="5"  Grid.ColumnSpan="4"  Background="White" Width="720">
+        <DataGrid IsReadOnly="True" x:Name="MyGrid" AutoGenerateColumns="false" ItemsSource="{Binding Path=DisplayCategories}" Grid.Row="10" Grid.Column="0" Grid.RowSpan="5"  Grid.ColumnSpan="4"  Background="White" Width="720">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Setter Property="Background" Value="{Binding Path=., Converter={StaticResource MyConverter}}" />
@@ -134,8 +134,8 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="Edit" Width="50" Margin="3" Click="BtnEdit_Click" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
-                                <Button Content="Delete" Width="50" Margin="3" Click="BtnDelete_Click" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
+                                <Button Content="Edit" Tag="{Binding}"  Width="50" Margin="3" Click="BtnEdit_Click" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
+                                <Button Content="Delete"  Tag="{Binding}" Width="50" Margin="3" Click="BtnDelete_Click" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
