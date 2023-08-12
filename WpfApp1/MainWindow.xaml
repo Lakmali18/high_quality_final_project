@@ -10,6 +10,7 @@
     <Grid Background="#FF060454">
         <Grid.Resources>
             <local:RowValueConverter x:Key="MyConverter"/>
+            <local:EditButtonConverter x:Key="EditButtonConverter"/>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -106,9 +107,9 @@
         <Button Name="btnDisplay" Content="View"  Grid.Row="5" Grid.Column="3"  Margin="5" Click="BtnDisplay_Click" Background="#FF000286" Foreground="White" BorderBrush="#FF00FFD6" Width="100"/>
         <Label Grid.Row="6" Grid.Column="0"/>
         <Button Name="btnSearch" Content="Search by Student ID"  Grid.Row="8" Grid.Column="2" Margin="5" Click="BtnSearch_Click" Background="#FF000286" Foreground="White" Width="130" BorderBrush="#FF00FFD6"/>
-        <TextBox Name="txtSearch" Text="" Grid.Row="8" Grid.Column="1"  Width="240" HorizontalAlignment="Left" Margin="5" BorderBrush="#FF00FFD6" Background="Transparent" Foreground="White"/>
+        <TextBox Name="txtSearch" Text="" Grid.Row="8" Grid.Column="1"  Width="240" HorizontalAlignment="Left" Margin="5" BorderBrush="#FF00FFD6" Background="#FFF" Foreground="White"/>
         <Label Content="View Details" Grid.Row="9" Grid.Column="0" Margin="10,0,0,0" FontWeight="Bold" FontSize="14" Foreground="White"/>
-        <DataGrid IsReadOnly="True" x:Name="MyGrid" AutoGenerateColumns="false" ItemsSource="{Binding Path=DisplayCategories}" Grid.Row="10" Grid.Column="0" Grid.RowSpan="5"  Grid.ColumnSpan="4"  Background="White" Width="720">
+        <DataGrid IsReadOnly="True" CanUserAddRows="False"  x:Name="MyGrid" AutoGenerateColumns="false" ItemsSource="{Binding Path=DisplayCategories}" Grid.Row="10" Grid.Column="0" Grid.RowSpan="5"  Grid.ColumnSpan="4"  Background="White" Width="720">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Setter Property="Background" Value="{Binding Path=., Converter={StaticResource MyConverter}}" />
@@ -123,6 +124,7 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
+
                 <DataGridTextColumn Header="Student ID" Binding="{Binding StudentId}"  Width="100" />
                 <DataGridTextColumn Header="Category Type" Binding="{Binding CategoryType}"  Width="130"/>
                 <DataGridTextColumn Header="Professor Name" Binding="{Binding ProfName}"  Width="100"/>
@@ -134,7 +136,9 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="Edit" Tag="{Binding}"  Width="50" Margin="3" Click="BtnEdit_Click" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
+                                <Button Content="{Binding IsEditing, Converter={StaticResource EditButtonConverter}}" Click="BtnEdit_Click" Tag="{Binding}"
+                                Width="50" Margin="3" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
+
                                 <Button Content="Delete"  Tag="{Binding}" Width="50" Margin="3" Click="BtnDelete_Click" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
                             </StackPanel>
                         </DataTemplate>
@@ -144,5 +148,4 @@
         </DataGrid>
         <Border BorderThickness="1" Grid.Row="1" Grid.Column="0"  Grid.RowSpan="6"  Grid.ColumnSpan="4" Margin="5" BorderBrush="#FF00E2FF"/>
     </Grid>
-
 </Window>

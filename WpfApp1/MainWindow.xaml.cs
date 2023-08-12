@@ -156,10 +156,13 @@ namespace WpfApp1
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
-            var query = from properties in DisplayCategories
-                        where properties.StudentId.ToString().ToLower() == txtSearch.Text.ToLower().Trim()
-                        select properties;
-            MyGrid.ItemsSource = query;
+            if (txtSearch.Text.ToLower().Trim().Length > 0)
+            {
+                var query = from properties in DisplayCategories
+                            where properties.StudentId.ToString().ToLower() == txtSearch.Text.ToLower().Trim()
+                            select properties;
+                MyGrid.ItemsSource = query;
+            }
         }
 
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
@@ -169,22 +172,14 @@ namespace WpfApp1
                 item.IsEditing = !item.IsEditing;
                 if (item.IsEditing)
                 {
-                    //MyGrid.IsReadOnly = false;
+                    MyGrid.IsReadOnly = false;
                     MyGrid.BeginEdit();
-                    foreach (var column in MyGrid.Columns)
-                    {
-                        if (column is DataGridTextColumn textColumn)
-                        {
-                            //textColumn.IsReadOnly = false;
-
-                        }
-                    }
                 } else
                 {
                     MyGrid.CommitEdit();
                     BuildCategory(item);
                     BtnSave_Click(sender, e);
-                    //MyGrid.IsReadOnly = true;
+                    MyGrid.IsReadOnly = true;
                 }
             }
         }
