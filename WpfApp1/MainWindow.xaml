@@ -6,7 +6,146 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
+    <Grid Background="#FF060454">
+        <Grid.Resources>
+            <local:RowValueConverter x:Key="MyConverter"/>
+            <local:EditButtonConverter x:Key="EditButtonConverter"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="ProfConnect" Grid.Row="0" FontWeight="Bold" FontSize="20"  Grid.ColumnSpan="4" HorizontalContentAlignment="Center" Margin="5" Foreground="#FF00E2FF"/>
+        <Label Grid.Row="1" Grid.Column="0"/>
+        <Label Content="Student ID (1:7)" Grid.Row="2" Grid.Column="0" FontWeight="Bold" Margin="10,0,0,0" Foreground="White"/>
+        <Label Content="Category Type" Grid.Row="3" Grid.Column="0" FontWeight="Bold" Margin="10,0,0,0" Foreground="White"/>
+        <Label Content="Professor Name" Grid.Row="4" Grid.Column="0" FontWeight="Bold" Margin="10,0,0,0" Foreground="White"/>
+        <Label Content="Course Name" Grid.Row="2" Grid.Column="2" FontWeight="Bold" Foreground="White"/>
+        <Label Content="Duration (15:60 mins)" Grid.Row="3" Grid.Column="2" FontWeight="Bold" Foreground="White"/>
+        <Label Content="SIN Number (1:9)" Grid.Row="4" Grid.Column="2" FontWeight="Bold" Foreground="White"/>
+        <TextBox Name="txtStudentId" Grid.Row="2" Grid.Column="1" Width="130" Margin="5" TextChanged="txtStudentId_TextChanged"
+                 ToolTip="{Binding ElementName=txtStudentId, Path=(Validation.Errors)[0].ErrorContent}">
+            <TextBox.Text>
+                <Binding Path="MyCategory.StudentId" NotifyOnValidationError="true" ValidatesOnExceptions="True">
+                    <Binding.ValidationRules>
+                        <local:StringRule IntOnly="True" Id="StudentId" Max="7" ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <ComboBox Name="cmbCategoryType" Grid.Row="3" Grid.Column="1" Margin="5" ItemsSource="{Binding Path=CategoryType}" Width="130"
+                  ToolTip="{Binding ElementName=cmbCategoryType, Path=(Validation.Errors)[0].ErrorContent}">
+            <ComboBox.SelectedIndex>
+                <Binding Path="MyCategory.IntType" NotifyOnValidationError="true" ValidatesOnExceptions="True">
+                    <Binding.ValidationRules>
+                        <local:TypeRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedIndex>
+        </ComboBox>
+        <ComboBox Name="cmbProfessorName" Grid.Row="4" Grid.Column="1" Margin="5" Width="130"
+                  ToolTip="{Binding ElementName=cmbProfessorName, Path=(Validation.Errors)[0].ErrorContent}" Loaded="comboBox_Loaded">
+            <ComboBox.SelectedIndex>
+                <Binding Path="MyCategory.ProfName" NotifyOnValidationError="true" ValidatesOnExceptions="True">
+                    <Binding.ValidationRules>
+                        <local:TypeRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedIndex>
+        </ComboBox>
+        <TextBox Name="txtCourseName" Grid.Row="2" Grid.Column="3" Width="130" Margin="5" TextChanged="txtCourseName_TextChanged"
+                 ToolTip="{Binding ElementName=txtCourseName, Path=(Validation.Errors)[0].ErrorContent}">
+            <TextBox.Text>
+                <Binding Path="MyCategory.CourseName" NotifyOnValidationError="true" ValidatesOnExceptions="True">
+                    <Binding.ValidationRules>
+                        <local:StringRule Id="CourseName" ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="txtDuration" Grid.Row="3" Grid.Column="3" Width="130" Margin="5"
+                 ToolTip="{Binding ElementName=txtDuration, Path=(Validation.Errors)[0].ErrorContent}">
+            <TextBox.Text>
+                <Binding Path="MyCategory.Duration" NotifyOnValidationError="true" ValidatesOnExceptions="true">
+                    <Binding.ValidationRules>
+                        <local:IntRule Min="15" Max="60" ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="txtSinNo" Grid.Row="4" Grid.Column="3" Width="130" Margin="5" TextChanged="txtSinNumber_TextChanged"
+                 ToolTip="{Binding ElementName=txtSinNo, Path=(Validation.Errors)[0].ErrorContent}">
+            <TextBox.Text>
+                <Binding Path="MyCategory.SinNo" NotifyOnValidationError="true" ValidatesOnExceptions="True">
+                    <Binding.ValidationRules>
+                        <local:StringRule IntOnly="True" Id="SinNo" Max="9" ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Button Name="btnAdd" Content="Add" Grid.Row="5" Grid.Column="0" Margin="5" Click="BtnAdd_Click" Background="#FF000286" Foreground="White" BorderBrush="#FF00FFD6" Width="100"/>
+        <Button Name="btnSave" Content="Save" Grid.Row="5" Grid.Column="1" Margin="5" Click="BtnSave_Click" Background="#FF000286" Foreground="White" BorderBrush="#FF00FFD6" Width="100" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" />
+        <Button Name="btnDisplay" Content="View"  Grid.Row="5" Grid.Column="3"  Margin="5" Click="BtnDisplay_Click" Background="#FF000286" Foreground="White" BorderBrush="#FF00FFD6" Width="100"/>
+        <Label Grid.Row="6" Grid.Column="0"/>
+        <Button Name="btnSearch" Content="Search by Student ID"  Grid.Row="8" Grid.Column="2" Margin="5" Click="BtnSearch_Click" Background="#FF000286" Foreground="White" Width="130" BorderBrush="#FF00FFD6"/>
+        <TextBox Name="txtSearch" Text="" Grid.Row="8" Grid.Column="1"  Width="240" HorizontalAlignment="Left" Margin="5" BorderBrush="#FF00FFD6" Background="#FFF" Foreground="White"/>
+        <Label Content="View Details" Grid.Row="9" Grid.Column="0" Margin="10,0,0,0" FontWeight="Bold" FontSize="14" Foreground="White"/>
+        <DataGrid IsReadOnly="True" CanUserAddRows="False"  x:Name="MyGrid" AutoGenerateColumns="false" ItemsSource="{Binding Path=DisplayCategories}" Grid.Row="10" Grid.Column="0" Grid.RowSpan="5"  Grid.ColumnSpan="4"  Background="White" Width="720">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{Binding Path=., Converter={StaticResource MyConverter}}" />
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Label.HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background" Value="#FF00E2FF" />
+                    <Setter Property="Padding" Value="5,5,5,5" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="Student ID" Binding="{Binding StudentId}"  Width="100" />
+                <DataGridTextColumn Header="Category Type" Binding="{Binding CategoryType}"  Width="130"/>
+                <DataGridTextColumn Header="Professor Name" Binding="{Binding ProfName}"  Width="100"/>
+                <DataGridTextColumn Header="Course Name" Binding="{Binding CourseName}"  Width="100"/>
+                <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"  Width="70"/>
+                <DataGridTextColumn Header="SIN Number" Binding="{Binding SinNo}"  Width="100"/>
+
+                <DataGridTemplateColumn Header="Actions" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="{Binding IsEditing, Converter={StaticResource EditButtonConverter}}" Click="BtnEdit_Click" Tag="{Binding}"
+                                Width="50" Margin="3" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
+
+                                <Button Content="Delete"  Tag="{Binding}" Width="50" Margin="3" Click="BtnDelete_Click" Background="#FF000286" BorderBrush="#FF00FFD6" Foreground="White"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Border BorderThickness="1" Grid.Row="1" Grid.Column="0"  Grid.RowSpan="6"  Grid.ColumnSpan="4" Margin="5" BorderBrush="#FF00E2FF"/>
     </Grid>
 </Window>
