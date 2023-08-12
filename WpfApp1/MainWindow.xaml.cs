@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes; 
 using System.Xml.Serialization;
 using ConsoleApp1;
 
@@ -34,7 +25,7 @@ namespace WpfApp1
         string[] categoryType = null;
 
         public List<string> ProfessorTypes = new List<string>
-            { "Igor_Pustylnick", "Daljit_Kaur", "Ruchika_Ruchika", "Sachin_Parikh"};
+            { "Igor Pustylnick", "Daljit Kaur", "Ruchika Ruchika", "Sachin Parikh"};
 
         public ObservableCollection<MyCategories> DisplayCategories { get => displayCategories; set => displayCategories = value; }
         public MyCategories MyCategory { get => myCategory; set => myCategory = value; }
@@ -45,8 +36,6 @@ namespace WpfApp1
         {
             InitializeComponent();
             Go();
-            Console.WriteLine("GUI running");
-           
         }
 
         public void Go()
@@ -54,7 +43,6 @@ namespace WpfApp1
             CategoryType = Enum.GetNames(typeof(CategoryTypes));
             DisplayCategories = new ObservableCollection<MyCategories>();
             cmbProfessorName.ItemsSource = ProfessorTypes;
-            //object ActionButtons = 'e';
             DataContext = this;
         }
 
@@ -89,32 +77,21 @@ namespace WpfApp1
             if (result && isValidStudentId && isValidDuration)
             {
                 Categories categories = null;
-                switch (cmbCategoryType.SelectedIndex)
-                {
-                    case 0:
-                        categories = new AcademicSupport(studentId, isValidProfName, isValideCourseName, duration, obscuredSinNo);
-                        break;
-                    case 1:
-                        categories = new CareerAdvices(studentId, isValidProfName, isValideCourseName, duration, obscuredSinNo);
-                        break;
-                    case 2:
-                        categories = new GetFeedback(studentId, isValidProfName, isValideCourseName, duration, obscuredSinNo);
-                        break;
-                    default:
-                        MessageBox.Show("Program Error");
-                        return;
-                }
-
-                myCategories.InnerCategories = categories;
+                BuildCategory(myCategories);
                 DisplayCategories.Add(myCategories);
-
-                cmbCategoryType.SelectedIndex = -1;
-                cmbProfessorName.SelectedIndex = -1;
-                txtStudentId.Text = string.Empty;
-                txtCourseName.Text = string.Empty;
-                txtDuration.Text = string.Empty;
-                txtSinNo.Text = string.Empty;
+                ResetForm();
             }
+        }
+
+
+        private void ResetForm()
+        {
+            cmbCategoryType.SelectedIndex = -1;
+            cmbProfessorName.SelectedIndex = -1;
+            txtStudentId.Text = string.Empty;
+            txtCourseName.Text = string.Empty;
+            txtDuration.Text = string.Empty;
+            txtSinNo.Text = string.Empty;
         }
 
         private void BtnDisplay_Click(object sender, RoutedEventArgs e)
@@ -139,9 +116,31 @@ namespace WpfApp1
                     string[] arrStr = categories.GetType().ToString().Split('.');
                     string fullType = arrStr[arrStr.Length - 1];
                     newCategories.CategoryType = fullType.Substring(0, fullType.Length);
+                    BuildCategory(newCategories);
                     DisplayCategories.Add(newCategories);
                 }
             }
+        }
+
+        private void BuildCategory(MyCategories myCategories)
+        {
+            Categories categories = null;
+            switch (myCategories.CategoryType)
+            {
+                case "AcademicSupport":
+                    categories = new AcademicSupport(myCategories.StudentId, myCategories.ProfName, myCategories.CourseName, myCategories.Duration, myCategories.SinNo);
+                    break;
+                case "CareerAdvices":
+                    categories = new CareerAdvices(myCategories.StudentId, myCategories.ProfName, myCategories.CourseName, myCategories.Duration, myCategories.SinNo);
+                    break;
+                case "GetFeedback":
+                    categories = new GetFeedback(myCategories.StudentId, myCategories.ProfName, myCategories.CourseName, myCategories.Duration, myCategories.SinNo);
+                    break;
+                default:
+                    MessageBox.Show("Program Error");
+                    return;
+            }
+            myCategories.InnerCategories = categories;
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -152,6 +151,7 @@ namespace WpfApp1
                 categoryList.Add(props.InnerCategories);
             }
             WriteToFile();
+            BtnDisplay_Click(sender, e);
         }
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
@@ -164,21 +164,36 @@ namespace WpfApp1
 
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.Tag is int studentId)
+            if (sender is Button button && button.Tag is MyCategories item)
             {
-                
-                // Handle button click using the itemId
-                Console.WriteLine($"Editing student with ID: {studentId}");
+                item.IsEditing = !item.IsEditing;
+                if (item.IsEditing)
+                {
+                    //MyGrid.IsReadOnly = false;
+                    MyGrid.BeginEdit();
+                    foreach (var column in MyGrid.Columns)
+                    {
+                        if (column is DataGridTextColumn textColumn)
+                        {
+                            //textColumn.IsReadOnly = false;
+
+                        }
+                    }
+                } else
+                {
+                    MyGrid.CommitEdit();
+                    BuildCategory(item);
+                    BtnSave_Click(sender, e);
+                    //MyGrid.IsReadOnly = true;
+                }
             }
         }
 
+
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-
             if (sender is Button button && button.Tag is MyCategories item)
             {
-                //YourDataSource.Remove(item);
-                Console.WriteLine($"Deleting student with ID: {item}");
                 DisplayCategories.Remove(item);
                 BtnSave_Click(sender, e);
                 BtnDisplay_Click(sender, e);
@@ -211,10 +226,16 @@ namespace WpfApp1
         }
         private void ReadFromFile()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(CategoryList));
-            TextReader tr = new StreamReader("profconect_info.xml");
-            categoryList = (CategoryList)serializer.Deserialize(tr);
-            tr.Close();
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(CategoryList));
+                TextReader tr = new StreamReader("profconect_info.xml");
+                categoryList = (CategoryList) serializer.Deserialize(tr);
+                tr.Close();
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void comboBox_Loaded(object sender, RoutedEventArgs e)

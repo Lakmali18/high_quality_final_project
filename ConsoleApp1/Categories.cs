@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace ConsoleApp1
 {
-    public abstract class Categories : ICategories
+    public abstract class Categories : ICategories, INotifyPropertyChanged
     {
         private int studentId;
         private string profName;
@@ -18,11 +19,19 @@ namespace ConsoleApp1
 
 
         private string time;
+        private bool isEditing = false;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Categories()
         {
             SetUpDelegate();
 
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public Categories(int studentId, string profName, string courseName, int duration, string sinNo)
@@ -36,6 +45,17 @@ namespace ConsoleApp1
 
         }
 
+        public bool IsEditing {
+            get { return isEditing; }
+            set 
+            { 
+                if (isEditing != value)
+                {
+                    isEditing = value;
+                    OnPropertyChanged(nameof(IsEditing));
+                }
+            }
+        }
         public int StudentId { get => studentId; set => studentId = value; }
         public string ProfName { get => profName; set => profName = value; }
         public string CourseName { get => courseName; set => courseName = value; }

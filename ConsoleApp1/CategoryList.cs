@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace ConsoleApp1
 {
-    public enum CategoryTypes { Academic_Support, Career_Advices, Get_Feedback }
+    public enum CategoryTypes { AcademicSupport, CareerAdvices, GetFeedback }
 
     [XmlRoot("CategoryList")]
     [XmlInclude(typeof(AcademicSupport))]
